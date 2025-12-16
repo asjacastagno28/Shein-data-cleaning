@@ -1,0 +1,186 @@
+------top 10 products-------------------------------
+
+SELECT  
+    category, 
+    product_subcategory, 
+    COUNT(*) AS n_products 
+FROM shein_purchases 
+GROUP BY category, product_subcategory 
+ORDER BY n_products DESC 
+LIMIT 10; 
+
+------sold-------------------------------------------
+
+SELECT 
+    CASE 
+        WHEN CAST(
+            CASE 
+                WHEN recent_sales LIKE '%k+%' THEN 
+                    CAST(REPLACE(REPLACE(REPLACE(recent_sales, 'k+ sold recently', ''), ' ', ''), ',', '') AS DECIMAL(10,2)) * 1000
+                WHEN recent_sales LIKE '%+%' THEN 
+                    CAST(REPLACE(REPLACE(REPLACE(recent_sales, '+ sold recently', ''), ' ', ''), ',', '') AS DECIMAL(10,2))
+                ELSE 0
+            END AS SIGNED) BETWEEN 1 AND 100 THEN '1-100 sold'
+        WHEN CAST(
+            CASE 
+                WHEN recent_sales LIKE '%k+%' THEN 
+                    CAST(REPLACE(REPLACE(REPLACE(recent_sales, 'k+ sold recently', ''), ' ', ''), ',', '') AS DECIMAL(10,2)) * 1000
+                WHEN recent_sales LIKE '%+%' THEN 
+                    CAST(REPLACE(REPLACE(REPLACE(recent_sales, '+ sold recently', ''), ' ', ''), ',', '') AS DECIMAL(10,2))
+                ELSE 0
+            END AS SIGNED) BETWEEN 101 AND 500 THEN '101-500 sold'
+        WHEN CAST(
+            CASE 
+                WHEN recent_sales LIKE '%k+%' THEN 
+                    CAST(REPLACE(REPLACE(REPLACE(recent_sales, 'k+ sold recently', ''), ' ', ''), ',', '') AS DECIMAL(10,2)) * 1000
+                WHEN recent_sales LIKE '%+%' THEN 
+                    CAST(REPLACE(REPLACE(REPLACE(recent_sales, '+ sold recently', ''), ' ', ''), ',', '') AS DECIMAL(10,2))
+                ELSE 0
+            END AS SIGNED) BETWEEN 501 AND 1000 THEN '501-1000 sold'
+        WHEN CAST(
+            CASE 
+                WHEN recent_sales LIKE '%k+%' THEN 
+                    CAST(REPLACE(REPLACE(REPLACE(recent_sales, 'k+ sold recently', ''), ' ', ''), ',', '') AS DECIMAL(10,2)) * 1000
+                WHEN recent_sales LIKE '%+%' THEN 
+                    CAST(REPLACE(REPLACE(REPLACE(recent_sales, '+ sold recently', ''), ' ', ''), ',', '') AS DECIMAL(10,2))
+                ELSE 0
+            END AS SIGNED) BETWEEN 1001 AND 5000 THEN '1001-5000 sold'
+        ELSE '+ 5000 sold'
+    END AS sold,
+    COUNT(*) AS n_products,
+    ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM shein_purchases WHERE recent_sales IS NOT NULL AND recent_sales != ''), 2) AS percentage,
+    MIN(
+        CASE 
+            WHEN recent_sales LIKE '%k+%' THEN 
+                CAST(REPLACE(REPLACE(REPLACE(recent_sales, 'k+ sold recently', ''), ' ', ''), ',', '') AS DECIMAL(10,2)) * 1000
+            WHEN recent_sales LIKE '%+%' THEN 
+                CAST(REPLACE(REPLACE(REPLACE(recent_sales, '+ sold recently', ''), ' ', ''), ',', '') AS DECIMAL(10,2))
+            ELSE NULL
+        END
+    ) AS min_sold,
+    MAX(
+        CASE 
+            WHEN recent_sales LIKE '%k+%' THEN 
+                CAST(REPLACE(REPLACE(REPLACE(recent_sales, 'k+ sold recently', ''), ' ', ''), ',', '') AS DECIMAL(10,2)) * 1000
+            WHEN recent_sales LIKE '%+%' THEN 
+                CAST(REPLACE(REPLACE(REPLACE(recent_sales, '+ sold recently', ''), ' ', ''), ',', '') AS DECIMAL(10,2))
+            ELSE NULL
+        END
+    ) AS max_sold,
+    ROUND(AVG(
+        CASE 
+            WHEN recent_sales LIKE '%k+%' THEN 
+                CAST(REPLACE(REPLACE(REPLACE(recent_sales, 'k+ sold recently', ''), ' ', ''), ',', '') AS DECIMAL(10,2)) * 1000
+            WHEN recent_sales LIKE '%+%' THEN 
+                CAST(REPLACE(REPLACE(REPLACE(recent_sales, '+ sold recently', ''), ' ', ''), ',', '') AS DECIMAL(10,2))
+            ELSE NULL
+        END
+    ), 0) AS avg_sold
+FROM shein_purchases
+WHERE recent_sales IS NOT NULL AND recent_sales != ''
+GROUP BY sold
+ORDER BY 
+    CASE 
+        WHEN sold = '1-100 sold' THEN 1
+        WHEN sold = '101-500 sold' THEN 101
+        WHEN sold = '501-1000 sold' THEN 501
+        WHEN sold = '1001-5000 sold' THEN 1001
+        ELSE 5001
+    END;
+
+------best seller percentage-------------------------
+
+SELECT 
+    CASE 
+        WHEN bestseller_rank LIKE '%Best Sellers%' THEN 'Best Seller'
+        ELSE 'Non Best Seller'
+    END AS category,
+    COUNT(*) AS n_products,
+    ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM shein_purchases), 2) AS percentage
+FROM shein_purchases
+GROUP BY 
+    CASE 
+        WHEN bestseller_rank LIKE '%Best Sellers%' THEN 'Best Seller'
+        ELSE 'Non Best Seller'
+    END
+ORDER BY n_products DESC;
+
+------number subcategory-----------------------------
+
+SELECT 
+    product_subcategory,
+    COUNT(*) AS n_products
+FROM shein_purchases
+GROUP BY product_subcategory
+ORDER BY n_products ASC;
+
+------number category-----------------------------
+
+SELECT 
+    category,
+    COUNT(*) AS n_products
+FROM shein_purchases
+GROUP BY category
+ORDER BY n_products ASC;
+
+------discount category----------------------------
+   
+SELECT 
+    category,
+    COUNT(*) AS tot_products,
+    SUM(CASE WHEN discount IS NOT NULL AND discount != '' THEN 1 ELSE 0 END) AS discounted_products,
+    SUM(CASE WHEN discount IS NULL OR discount = '' THEN 1 ELSE 0 END) AS not_discounted_products,
+    ROUND(
+        SUM(CASE WHEN discount IS NOT NULL AND discount != '' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 
+        2
+    ) AS discounted_percentage,
+    ROUND(AVG(
+        CASE 
+            WHEN discount IS NOT NULL AND discount != '' 
+            THEN CAST(REPLACE(REPLACE(discount, '-', ''), '%', '') AS FLOAT)
+            ELSE NULL 
+        END
+    ), 2) AS avg_discounted_percentage
+FROM shein_purchases
+GROUP BY category
+ORDER BY discounted_percentage DESC;
+
+------discount subcategory-------------------------
+
+SELECT 
+    product_subcategory,
+    COUNT(*) AS tot_products,
+    SUM(CASE WHEN discount IS NOT NULL AND discount != '' THEN 1 ELSE 0 END) AS discounted_products,
+    SUM(CASE WHEN discount IS NULL OR discount = '' THEN 1 ELSE 0 END) AS not_discounted_products,
+    ROUND(
+        SUM(CASE WHEN discount IS NOT NULL AND discount != '' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 
+        2
+    ) AS discounted_percentage,
+    ROUND(AVG(
+        CASE 
+            WHEN discount IS NOT NULL AND discount != '' 
+            THEN CAST(REPLACE(REPLACE(discount, '-', ''), '%', '') AS FLOAT)
+            ELSE NULL 
+        END
+    ), 2) AS avg_discounted_percentage
+FROM shein_purchases
+GROUP BY product_subcategory
+ORDER BY discounted_percentage DESC;
+
+------avg price category-------------------------------
+
+SELECT 
+    category,
+    ROUND(AVG(price),2) AS avg_products
+FROM shein_purchases
+GROUP BY category
+ORDER BY avg_products ASC;
+
+------avg price subcategory----------------------------
+
+SELECT 
+    product_subcategory,
+    ROUND(AVG(price),2) AS avg_products
+FROM shein_purchases
+GROUP BY product_subcategory
+ORDER BY avg_products ASC;
