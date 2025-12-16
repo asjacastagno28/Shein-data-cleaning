@@ -1,0 +1,454 @@
+Major Issues Identified
+
+Misaligned data columns - values shifted between columns
+Inconsistent formatting - missing currency symbols, incorrect patterns
+Duplicate entries - same products with slight variations
+Malformed records - URL fragments in discount field
+Null/empty values requiring cleanup
+
+
+------------Table Creation-------------------------------------------------------
+
+CREATE TABLE shein_purchases AS
+SELECT
+  'appliances' AS category,
+  'Electronics & Auto' AS macro_category,
+  discount,
+  `goods-title-link`,
+  `goods-title-link--jump`,
+  `goods-title-link--jump href`,
+  price,
+  NULL AS `color-count`,
+  `rank-sub`,
+  `rank-title`,
+  NULL AS `blackfridaybelts-bg src`,
+  NULL AS `blackfridaybelts-content`,
+  selling_proposition
+FROM appliances
+
+UNION ALL
+
+SELECT
+  'automotive',
+  'Electronics & Auto',
+  discount,
+  `goods-title-link`,
+  `goods-title-link--jump`,
+  `goods-title-link--jump href`,
+  price,
+  NULL AS `color-count`,
+  NULL AS `rank-sub`,
+  NULL AS `rank-title`,
+  NULL AS `blackfridaybelts-bg src`,
+  NULL AS `blackfridaybelts-content`,
+  selling_proposition
+FROM automotive
+
+UNION ALL
+
+SELECT
+  'baby_and_maternity',
+  'Lifestyle & Wellness',
+  discount,
+  `goods-title-link`,
+  `goods-title-link--jump`,
+  `goods-title-link--jump href`,
+  price,
+  `color-count`,
+  NULL AS `rank-sub`,
+  NULL AS `rank-title`,
+  NULL AS `blackfridaybelts-bg src`,
+  NULL AS `blackfridaybelts-content`,
+  selling_proposition
+FROM baby_and_maternity
+
+UNION ALL
+
+SELECT
+  'bags_and_luggage',
+  'Fashion & Accessories',
+  discount,
+  `goods-title-link`,
+  `goods-title-link--jump`,
+  `goods-title-link--jump href`,
+  price,
+  `color-count`,
+  `rank-sub`,
+  `rank-title`,
+  NULL AS `blackfridaybelts-bg src`,
+  NULL AS `blackfridaybelts-content`,
+  selling_proposition
+FROM bags_and_luggage
+
+UNION ALL
+
+SELECT
+  'beauty_and_health',
+  'Lifestyle & Wellness',
+  discount,
+  `goods-title-link`,
+  `goods-title-link--jump`,
+  `goods-title-link--jump href`,
+  price,
+  `color-count`,
+  `rank-sub`,
+  `rank-title`,
+  NULL AS `blackfridaybelts-bg src`,
+  NULL AS `blackfridaybelts-content`,
+  selling_proposition
+FROM beauty_and_health
+
+UNION ALL
+
+SELECT
+  'curve',
+  'Home & Living',
+  discount,
+  `goods-title-link`,
+  `goods-title-link--jump`,
+  `goods-title-link--jump href`,
+  price,
+  `color-count`,
+  `rank-sub`,
+  `rank-title`,
+  NULL AS `blackfridaybelts-bg src`,
+  NULL AS `blackfridaybelts-content`,
+  selling_proposition
+FROM curve
+
+UNION ALL
+
+SELECT
+  'home_and_kitchen',
+  'Home & Living',
+  discount,
+  `goods-title-link`,
+  NULL AS `goods-title-link--jump`,
+  NULL AS `goods-title-link--jump href`,
+  price,
+  NULL AS `color-count`,
+  `rank-sub`,
+  `rank-title`,
+  NULL AS `blackfridaybelts-bg src`,
+  NULL AS `blackfridaybelts-content`,
+  selling_proposition
+FROM home_and_kitchen
+
+UNION ALL
+
+SELECT
+  'home_textile',
+  'Home & Living',
+  discount,
+  `goods-title-link`,
+  `goods-title-link--jump`,
+  `goods-title-link--jump href`,
+  price,
+  `color-count`,
+  `rank-sub`,
+  `rank-title`,
+  NULL AS `blackfridaybelts-bg src`,
+  NULL AS `blackfridaybelts-content`,
+  selling_proposition
+FROM home_textile
+
+UNION ALL
+
+SELECT
+  'kids',
+  'Fashion & Accessories',
+  discount,
+  `goods-title-link`,
+  `goods-title-link--jump`,
+  `goods-title-link--jump href`,
+  price,
+  `color-count`,
+  `rank-sub`,
+  `rank-title`,
+  NULL AS `blackfridaybelts-bg src`,
+  NULL AS `blackfridaybelts-content`,
+  selling_proposition
+FROM kids
+
+UNION ALL
+
+SELECT
+  'mens_clothes',
+  'Fashion & Accessories',
+  discount,
+  `goods-title-link`,
+  NULL AS `goods-title-link--jump`,
+  NULL AS `goods-title-link--jump href`,
+  price,
+  `color-count`,
+  `rank-sub`,
+  `rank-title`,
+  NULL AS `blackfridaybelts-bg src`,
+  NULL AS `blackfridaybelts-content`,
+  selling_proposition
+FROM mens_clothes
+
+UNION ALL
+
+SELECT
+  'office_and_school_supplies',
+  'Lifestyle & Wellness',
+  discount,
+  `goods-title-link`,
+ `goods-title-link--jump`,
+  `goods-title-link--jump href`,
+  price,
+    NULL AS `color-count`,
+  `rank-sub`,
+  `rank-title`,
+  NULL AS `blackfridaybelts-bg src`,
+  NULL AS `blackfridaybelts-content`,
+  selling_proposition
+FROM office_and_school_supplies
+
+UNION ALL
+
+SELECT
+  'pet_supplies',
+  'Lifestyle & Wellness',
+  discount,
+  `goods-title-link`,
+  `goods-title-link--jump`,
+  `goods-title-link--jump href`,
+  price,
+   NULL AS `color-count`,
+  `rank-sub`,
+  `rank-title`,
+  `blackfridaybelts-bg src`,
+ `blackfridaybelts-content`,
+  selling_proposition
+FROM pet_supplies
+
+UNION ALL
+
+SELECT
+  'shoes',
+  'Fashion & Accessories',
+  discount,
+  `goods-title-link`,
+`goods-title-link--jump`,
+ `goods-title-link--jump href`,
+  price,
+  `color-count`,
+  `rank-sub`,
+  `rank-title`,
+  NULL AS `blackfridaybelts-bg src`,
+  NULL AS `blackfridaybelts-content`,
+  selling_proposition
+FROM shoes
+
+UNION ALL
+
+SELECT
+  'sports_and_outdoors',
+  'Fashion & Accessories',
+  discount,
+  `goods-title-link`,
+  `goods-title-link--jump`,
+  `goods-title-link--jump href`,
+  price,
+  `color-count`,
+  `rank-sub`,
+  `rank-title`,
+  `blackfridaybelts-bg src`,
+  NULL AS `blackfridaybelts-content`,
+  selling_proposition
+FROM sports_and_outdoors
+
+UNION ALL
+
+SELECT
+  ' swimwear',
+  'Fashion & Accessories',
+  discount,
+  `goods-title-link`,
+`goods-title-link--jump`,
+  `goods-title-link--jump href`,
+  price,
+  `color-count`,
+  `rank-sub`,
+  `rank-title`,
+  NULL AS `blackfridaybelts-bg src`,
+  NULL AS `blackfridaybelts-content`,
+   NULL AS  selling_proposition
+FROM swimwear
+
+UNION ALL
+
+SELECT
+  'tools_and_home_improvement',
+   'Home & Living',
+  discount,
+  `goods-title-link`,
+  `goods-title-link--jump`,
+   `goods-title-link--jump href`,
+  price,
+ NULL AS  `color-count`,
+  `rank-sub`,
+  `rank-title`,
+  NULL AS `blackfridaybelts-bg src`,
+  NULL AS `blackfridaybelts-content`,
+  selling_proposition
+FROM tools_and_home_improvement
+
+UNION ALL
+
+SELECT
+  'toys_and_games',
+  'Lifestyle & Wellness',
+  discount,
+  `goods-title-link`,
+  NULL AS `goods-title-link--jump`,
+  NULL AS `goods-title-link--jump href`,
+  price,
+   NULL AS `color-count`,
+  `rank-sub`,
+  `rank-title`,
+  NULL AS `blackfridaybelts-bg src`,
+  NULL AS `blackfridaybelts-content`,
+  selling_proposition
+FROM toys_and_games
+
+UNION ALL
+
+SELECT
+  'underwear_and_sleepwear',
+  'Fashion & Accessories',
+  discount,
+  `goods-title-link`,
+    `goods-title-link--jump`,
+    `goods-title-link--jump href`,
+  price,
+  `color-count`,
+  `rank-sub`,
+  `rank-title`,
+  NULL AS `blackfridaybelts-bg src`,
+  NULL AS `blackfridaybelts-content`,
+  selling_proposition
+FROM underwear_and_sleepwear
+
+UNION ALL
+
+SELECT
+  'womens_clothing',
+  'Fashion & Accessories',
+  discount,
+  `goods-title-link`,
+  NULL AS `goods-title-link--jump`,
+  NULL AS `goods-title-link--jump href`,
+  price,
+  `color-count`,
+  `rank-sub`,
+  `rank-title`,
+  NULL AS `blackfridaybelts-bg src`,
+  NULL AS `blackfridaybelts-content`,
+  selling_proposition
+FROM womens_clothing;
+
+-------------Price Field Corrections-------------
+
+SELECT discount
+from shein_purchases
+where discount like '%$%';
+
+update shein_purchases
+set price = concat(discount,'', price)
+where discount like '%$%';
+
+DELETE from shein_purchases
+WHERE discount LIKE '%$%';
+
+update shein_purchases
+set price = concat(selling_proposition,'', price)
+where selling_proposition like '%$%';
+
+------------Complex Multi-Column Realignment-------------
+
+UPDATE shein_purchases
+SET
+  price = CASE
+    WHEN selling_proposition REGEXP '^\\$[0-9]+(\\.[0-9]+)?' THEN selling_proposition
+    WHEN price REGEXP '^\\$[0-9]+(\\.[0-9]+)?' THEN price
+    ELSE price
+  END,
+  
+  selling_proposition = CASE
+    WHEN price NOT REGEXP '^\\$[0-9]+(\\.[0-9]+)?' AND price IS NOT NULL AND price <> '' THEN price
+    WHEN selling_proposition REGEXP '^\\$[0-9]+(\\.[0-9]+)?' THEN NULL
+    ELSE selling_proposition
+  END;
+
+-------------Field Pattern Validation-----------
+
+SELECT *,
+  CASE WHEN discount NOT LIKE '%-%' AND discount IS NOT NULL AND discount != '' 
+       THEN 'NO -' ELSE '' END AS prob_discount,
+  CASE WHEN `rank-sub` NOT LIKE '%in%' AND `rank-sub` IS NOT NULL AND `rank-sub` != '' 
+       THEN 'NO in' ELSE '' END AS prob_rank_sub,
+  CASE WHEN `rank-title` NOT LIKE '%be%' AND `rank-title` IS NOT NULL AND `rank-title` != '' 
+       THEN 'NO in' ELSE '' END AS prob_rank_title
+       from all_purchasss
+WHERE 
+  (discount NOT LIKE '%-%' AND discount IS NOT NULL AND discount != '')
+  OR (`rank-sub` NOT LIKE '%in%' AND `rank-sub` IS NOT NULL AND `rank-sub` != '')
+  OR (`rank-title` NOT LIKE '%be%' AND `rank-title` IS NOT NULL AND `rank-title` != '');
+
+-------------Remove and update Malformed Records---------------
+
+DELETE from shein_purchases
+WHERE discount like '%ntifier=fc%3DHome%20Textile%60sc%3DHome%20Te%
+
+ DELETE from shein_purchases
+WHERE `goods-title-link` LIKE '%Wall Plate Outlet Covers, Plug Covers for Electrical O%'
+AND category = 'home_and_kitchen';
+
+update shein_purchases
+set price = concat(selling_proposition,'', price)
+where `goods-title-link` like '%intage Green Motivational Daily Gratitude Poster For Room Aesthetic Cute Sunflower Butterfly Food Canvas Wall Art Painting Vintage Wall Decor For Kitche%'
+or  `goods-title-link` like '%pc Plastic Photo Frame With Rhinestone Pearl String For 6"""/7""""/8""""/10"""" Pictur%';
+
+(and others)
+
+-------------Column Standardization & Logical Ordering----------------------------------------------
+
+SELECT * FROM shein_purchases;
+
+ALTER TABLE shein_purchases CHANGE COLUMN title product_title LONGTEXT;
+ALTER TABLE shein_purchases CHANGE COLUMN category product_subcategory MEDIUMTEXT;
+ALTER TABLE shein_purchases CHANGE COLUMN `rank-sub` category_placement LONGTEXT;
+ALTER TABLE shein_purchases CHANGE COLUMN `rank-title` bestseller_rank LONGTEXT;
+ALTER TABLE shein_purchases CHANGE COLUMN selling_proposition recent_sales LONGTEXT;
+ALTER TABLE shein_purchases CHANGE COLUMN macro_category category MEDIUMTEXT;
+
+
+ALTER TABLE shein_purchases
+    MODIFY COLUMN category MEDIUMTEXT FIRST,
+    MODIFY COLUMN product_subcategory MEDIUMTEXT AFTER category,
+    MODIFY COLUMN category_placement LONGTEXT AFTER product_subcategory,
+    MODIFY COLUMN product_title LONGTEXT AFTER category_placement,
+    MODIFY COLUMN price LONGTEXT AFTER product_title,
+    MODIFY COLUMN discount LONGTEXT AFTER price,
+    MODIFY COLUMN bestseller_rank LONGTEXT AFTER discount,
+    MODIFY COLUMN recent_sales LONGTEXT AFTER bestseller_rank;
+
+-----------Bestseller Rank Standardization-----------------------------------------------------------
+
+SELECT 
+    bestseller_rank,
+    COUNT(*) AS n_products,
+    ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM shein_purchases), 2) AS percent
+FROM shein_purchases
+WHERE bestseller_rank IS NOT NULL AND bestseller_rank != ''
+GROUP BY bestseller_rank
+ORDER BY n_products DESC;
+
+UPDATE shein_purchases
+SET bestseller_rank = '#1 Best Sellers'
+WHERE bestseller_rank = '#1 Best Seller';
+
+[Repeated for ranks #2-#10]
