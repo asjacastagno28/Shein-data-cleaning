@@ -28,6 +28,7 @@ Issues fixed : Misaligned columns, formatting errors, duplicates
 - `Analysis queries with SQL` - Business analysis queries  
 - `shein clean table.csv` - Final cleaned dataset 
 - `shein excel analysis queries tables.xlsx` - Query results visualization
+  
 
 ## 🛠️ SQL Techniques Demonstrated
 
