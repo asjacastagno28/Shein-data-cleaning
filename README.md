@@ -1,4 +1,4 @@
-- ## Shein E-commerce Data Cleaning Project
+## Shein E-commerce Data Cleaning Project
 
 - ## 📋 Project Overview
 
@@ -29,7 +29,7 @@ Issues fixed : Misaligned columns, formatting errors, duplicates
 - `shein clean table.csv` - Final cleaned dataset 
 - `shein excel analysis queries tables.xlsx` - Query results visualization
 
-- ## 🛠️ SQL Techniques Demonstrated
+## 🛠️ SQL Techniques Demonstrated
 
 ### Data Integration & Schema Design
 - `UNION ALL` operations to merge 19 category tables
