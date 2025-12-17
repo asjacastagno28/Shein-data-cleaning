@@ -2,7 +2,7 @@
 
 ## 📋 Project Overview
           
-This project demonstrates advanced SQL data cleaning techniques on a real-world e-commerce dataset from Shein containing more then 59000 products across 19 product categories. The dataset was heavily corrupted with misaligned columns, inconsistent formatting, and malformed records requiring systematic cleaning.
+This project demonstrates advanced SQL data cleaning techniques on a real-world e-commerce dataset from Shein containing more than 59000 products across 19 product categories. The dataset was heavily corrupted with misaligned columns, inconsistent formatting, and malformed records requiring systematic cleaning.
 Goal: Transform a messy, unusable dataset into a clean, analysis-ready table using only SQL.
 
 ## 🔴 Data Quality Issues Identified
