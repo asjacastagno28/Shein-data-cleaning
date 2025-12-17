@@ -28,3 +28,32 @@ Issues fixed : Misaligned columns, formatting errors, duplicates
 - `Analysis queries with SQL` - Business analysis queries  
 - `shein clean table.csv` - Final cleaned dataset 
 - `shein excel analysis queries tables.xlsx` - Query results visualization
+
+- ## 🛠️ SQL Techniques Demonstrated
+
+### Data Integration & Schema Design
+- `UNION ALL` operations to merge 19 category tables
+- Strategic handling of missing columns with `NULL` values
+- Column aliasing and standardization
+
+### Data Transformation & Cleaning
+- Complex `CASE` statements for conditional logic
+- `REGEXP` pattern matching for validation
+- String manipulation with `REPLACE()`, `CONCAT()`, `CAST()`
+- Numeric conversion handling (e.g., "5k+ sold" → 5000)
+
+### Data Quality & Validation
+- Pattern validation to identify malformed records
+- `DELETE` operations for corrupted data removal
+- Multi-column realignment with conditional `UPDATE`
+
+### Schema Normalization
+- `ALTER TABLE` for column renaming and reordering
+- Logical column sequencing
+- Data type optimization
+
+### Business Analysis
+- Aggregations with `GROUP BY` and statistical functions
+- Percentage calculations using subqueries
+- Custom sorting with `ORDER BY CASE`
+- Multi-level categorization with nested `CASE` statements
